@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏥 차치업무 도우미 챗봇</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- 헤더 영역 -->
+        <header class="chat-header">
+            <div class="header-content">
+                <h1>🏥 차치업무 도우미</h1>
+                <p>차치업무 관련 문의사항을 입력해주세요</p>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">온라인</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 메시지 영역 -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-text">
+                        안녕하세요! 차치업무 도우미입니다. 무엇을 도와드릴까요?
+                    </div>
+                    <div class="message-time" id="welcomeTime"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 빠른 버튼 영역 -->
+        <div class="quick-buttons" id="quickButtons">
+            <!-- 메인 카테고리 버튼 -->
+            <div class="button-group" id="mainButtons">
+                <button class="quick-btn category-btn" onclick="sendQuickMessage('수리')">
+                    🔧 수리
+                </button>
+                <button class="quick-btn category-btn" onclick="sendQuickMessage('물품')">
+                    📦 물품
+                </button>
+                <button class="quick-btn category-btn" onclick="sendQuickMessage('멸균품거즈')">
+                    🧽 멸균품/거즈
+                </button>
+                <button class="quick-btn category-btn" onclick="sendQuickMessage('격리실')">
+                    🦠 격리실
+                </button>
+            </div>
+            
+            <!-- 네비게이션 버튼 -->
+            <div class="button-group navigation-buttons" id="navigationButtons" style="display: none;">
+                <button class="quick-btn nav-btn" onclick="sendQuickMessage('뒤로')">
+                    ⬅️ 뒤로
+                </button>
+                <button class="quick-btn nav-btn" onclick="sendQuickMessage('메인')">
+                    🏠 메인
+                </button>
+                <button class="quick-btn nav-btn" onclick="showSearchInput()">
+                    🔍 검색
+                </button>
+            </div>
+            
+            <!-- 검색 입력 영역 -->
+            <div class="search-container" id="searchContainer" style="display: none;">
+                <input type="text" id="searchInput" placeholder="2글자 이상 입력하여 검색..." maxlength="50">
+                <button class="search-btn" onclick="performSearch()">검색</button>
+                <button class="cancel-btn" onclick="hideSearchInput()">취소</button>
+            </div>
+        </div>
+        
+        <!-- 입력 영역 -->
+        <div class="chat-input">
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="메시지를 입력하세요..." 
+                    maxlength="200"
+                    autocomplete="off"
+                >
+                <button id="sendButton" onclick="sendMessage()">
+                    <span class="send-icon">📤</span>
+                    <span class="send-text">전송</span>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span class="char-count">
+                    <span id="charCount">0</span>/200
+                </span>
+                <button class="help-btn" onclick="getHelp()">
+                    ❓ 도움말
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 로딩 오버레이 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>응답을 기다리는 중...</p>
+        </div>
+    </div>
+    
+    <!-- 에러 모달 -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ 오류 발생</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">오류가 발생했습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal()">확인</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 도움말 모달 -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📚 사용법 안내</h3>
+                <button class="modal-close" onclick="closeHelpModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-content">
+                    <h4>🏥 주요 기능</h4>
+                    <ul>
+                        <li><strong>수리:</strong> 의료기기 수리 요청 (DARWIN 시스템)</li>
+                        <li><strong>물품:</strong> 물품 구매형태 조회, 청구</li>
+                        <li><strong>제제약/수액:</strong> 소독제, 수액 관련 문의</li>
+                        <li><strong>멸균품/거즈:</strong> 거즈 공급, 멸균품 청구</li>
+                        <li><strong>격리실:</strong> VRE, CPE, 음압격리 운영</li>
+                        <li><strong>ICU전동:</strong> ICU 전동 절차 안내</li>
+                        <li><strong>임종실:</strong> 임종실 입실기준</li>
+                        <li><strong>신규백업:</strong> 신규 백업 업무 안내</li>
+                    </ul>
+                    
+                    <h4>💬 사용 예시</h4>
+                    <ul>
+                        <li>"EKG 수리 요청"</li>
+                        <li>"거즈 공급 언제 되나요?"</li>
+                        <li>"VRE 격리실 절차"</li>
+                        <li>"의공기술실 연락처"</li>
+                        <li>"ICU 전동 방법"</li>
+                    </ul>
+                    
+                    <h4>🆘 응급상황</h4>
+                    <p>"응급", "화재", "코드블루" 등의 키워드를 사용하면 우선 처리됩니다.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeHelpModal()">확인</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+    <script>
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 환영 메시지 시간 설정
+            document.getElementById('welcomeTime').textContent = getCurrentTime();
+            
+            // 입력 필드에 포커스
+            document.getElementById('messageInput').focus();
+            
+            // 문자 수 카운터 초기화
+            updateCharCount();
+            
+            console.log('🏥 차치업무 도우미 챗봇이 준비되었습니다!');
+        });
+    </script>
+</body>
+</html>
