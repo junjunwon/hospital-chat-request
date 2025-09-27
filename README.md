@@ -24,11 +24,6 @@
 - **키보드 단축키**: 접근성 향상
 
 ## 🚀 사용 방법
-
-### 🌐 GitHub Pages (권장)
-1. 위의 온라인 데모 링크 접속
-2. 바로 사용 시작!
-
 ### 💻 로컬 서버 실행
 ```bash
 # 저장소 클론
@@ -107,13 +102,6 @@ hospital-chat-request/
 - **Python 버전**: `hospital_chatbot/templates/hierarchical_index.html` 수정
 
 ## 📊 기술 세부사항
-
-### 🌐 정적 웹사이트 버전
-- **언어**: HTML5, CSS3, JavaScript (ES6+)
-- **데이터**: JSON 형태의 정적 데이터
-- **검색**: 클라이언트 사이드 키워드 매칭
-- **성능**: 메시지 제한(50개), 지연 로딩
-
 ### 💻 Python 서버 버전
 - **백엔드**: Python HTTP Server
 - **프론트엔드**: HTML, CSS, JavaScript
@@ -121,27 +109,10 @@ hospital-chat-request/
 - **세션**: 서버 사이드 세션 관리
 
 ## 📱 호환성
-
 - **브라우저**: Chrome, Firefox, Safari, Edge (최신 버전)
 - **디바이스**: 데스크톱, 태블릿, 모바일
 - **네트워크**: 오프라인 지원 (정적 버전)
 - **접근성**: 키보드 네비게이션, 스크린 리더 지원
-
-## 🔄 최신 업데이트
-
-### 2024.09.26 - v2.0 (GitHub Pages 지원)
-- ✅ GitHub Pages 정적 웹사이트 버전 추가
-- ✅ JavaScript 챗봇 로직 완전 구현
-- ✅ 반응형 모바일 UI 최적화
-- ✅ 자동 배포 GitHub Actions 설정
-- ✅ 오프라인 지원 가능한 구조
-
-### 2024.09.26 - v1.0 (Python 서버)
-- ✅ 계층적 데이터 구조 구현
-- ✅ 엑셀 데이터 완전 파싱 (63개 세부항목)
-- ✅ 자유텍스트 검색 기능
-- ✅ 동적 UI 및 네비게이션 버튼
-- ✅ 타이핑 인디케이터 및 애니메이션
 
 ## 🤝 기여 방법
 
@@ -152,17 +123,4 @@ hospital-chat-request/
 5. Open a Pull Request
 
 ## 📄 라이선스
-
 이 프로젝트는 MIT 라이선스 하에 배포됩니다.
-
-## 📞 문의
-
-- **개발팀**: 삼성서울병원 IT지원팀
-- **이슈 신고**: GitHub Issues
-- **기능 제안**: GitHub Discussions
-
----
-
-💻 **개발**: 삼성서울병원 중앙간호사 도우미 개발팀  
-🌐 **온라인 데모**: [GitHub Pages](https://[사용자명].github.io/hospital-chat-request/)  
-📅 **최종 업데이트**: 2024년 9월 26일
